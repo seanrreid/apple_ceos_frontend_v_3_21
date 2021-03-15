@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Route, Link, useHistory } from 'react-router-dom';
 import CeoDetailsAsync from './CeoDetailsAsync';
 
-const CeoList = () => {
+const CeoList = ({ reload }) => {
     const [ceos, setCeos] = useState([]);
     const history = useHistory();
 
@@ -13,7 +13,7 @@ const CeoList = () => {
             ).then((response) => response.json());
             setCeos(ceoData);
         })();
-    }, [setCeos]);
+    }, [reload]);
 
     return (
         <>
@@ -24,7 +24,9 @@ const CeoList = () => {
                             {ceos.map((ceo, index) => {
                                 return (
                                     <li key={index}>
-                                        <Link to={`/ceo/${ceo.slug}`}>{ceo.name}</Link>
+                                        <Link to={`/ceo/${ceo.slug}`}>
+                                            {ceo.name}
+                                        </Link>
                                     </li>
                                 );
                             })}
@@ -32,7 +34,9 @@ const CeoList = () => {
                     </Route>
                     <Route path='/ceo/:ceo_slug'>
                         <CeoDetailsAsync />
-                        <button type="button" onClick={() => history.goBack()}>Go Back</button>
+                        <button type='button' onClick={() => history.goBack()}>
+                            Go Back
+                        </button>
                     </Route>
                 </>
             ) : (
